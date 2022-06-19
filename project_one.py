@@ -1,11 +1,11 @@
 import mysql.connector
 
-#import maskpass
-#passwd1 = maskpass.askpass(prompt="What is your MySQL password: ", mask="*")
+import maskpass
+passwd1 = maskpass.askpass(prompt="What is your MySQL password: ", mask="*")
 mydb = mysql.connector.connect(
     host = "localhost",
     user = "root",
-    passwd = "ButCanYouGuessThis#1", #passwd1,
+    passwd = "passwd1",
     database = "Project_One"
 )
 
@@ -14,7 +14,9 @@ mycursor = mydb.cursor()
 
 
 #creating tables
-#mycursor.execute("CREATE TABLE Orders (OrderID int PRIMARY KEY AUTO_INCREMENT, GameID int, FOREIGN KEY(GameID) References Games(GameID), CustomerID int, FOREIGN KEY(CustomerID) REFERENCES Customers(CustomerID)") 
+#mycursor.execute("CREATE TABLE Games (GameID int PRIMARY KEY AUTO_INCREMENT, Title VARCHAR(255), Platform VARCHAR(255), Price VARCHAR(255))") 
+#mycursor.execute("CREATE TABLE Customers (CustomerID int PRIMARY KEY AUTO_INCREMENT, Name VARCHAR(255), Address VARCHAR(255), Phone VARCHAR(255))") 
+#mycursor.execute("CREATE TABLE Orders (OrderID int PRIMARY KEY AUTO_INCREMENT, GameID int, FOREIGN KEY(GameID) References Games(GameID), CustomerID int, FOREIGN KEY(CustomerID) REFERENCES Customers(CustomerID))") 
 
 #Adding a column to a table
 #mycursor.execute("ALTER Games ADD Price DECIMAL")
@@ -22,9 +24,9 @@ mycursor = mydb.cursor()
 #Inserting values into a table
 #mycursor.execute("INSERT INTO Customers (name, address, phone) VALUES ('Anthony Taylor', '193 Coffey Creek Suite 064 Port David DE 38909', '700-409-7604')")
 
-#mycursor.execute("INSERT INTO Orders (Game, Customer, Price) VALUES ('Mega-Man', 'David Nagel', 5.00)")
-# mycursor.execute("INSERT INTO Customers (Name, Address, Phone) VALUES ('Anthony Taylor', '441 Oakridge Lane', '847-273-9839')")
-# mycursor.execute("INSERT INTO Games (Title, Platform, Price) VALUES ('Final Fantasy XIV', 'PC', '59.99')")
+#mycursor.execute("INSERT INTO Orders (GameID, CustomerID) VALUES (5, 3)")
+#mycursor.execute("INSERT INTO Customers (Name, Address, Phone) VALUES ('Bruce Whitesell', '5117 Johnson Pines Suite 852', '899-289-4202')")
+#mycursor.execute("INSERT INTO Games (Title, Platform, Price) VALUES ('Destiny 2', 'PC', '19.99')")
 #mydb.commit()
 
 
@@ -43,8 +45,6 @@ def customerInfo():
     for cusInfo in mycursor:
         print(cusInfo)
     
-    
-
 
 def addOrder():
     gameID = int(input("Please enter the ID of the game you wish to order: "))
@@ -55,8 +55,6 @@ def addOrder():
     gameOrder = mycursor.execute(f"SELECT Title, Platform, Price FROM Games WHERE GameID = {gameID}")
     for gameOrder in mycursor:
         print("Your order for:",gameOrder, "has been placed!")
-
-
 
 
 def viewGames():
@@ -96,8 +94,6 @@ def startup():
         except ValueError:
             print(ValueError)
             print("Not valid input")
-        if sel > 6:
-            print("Not a valid input")
         else:
             break
     while True:
@@ -105,10 +101,11 @@ def startup():
             print("Our current selection of games")
             viewGames()
             print("Would you like to make another selection?")
-            print('\t2. Place an order')
-            print('\t3. View customer info')
-            print('\t4. Add a game')
-            print('\t5. Exit')
+            print('\t2. Add customer info')
+            print('\t3. place an order')
+            print('\t4. View order')
+            print('\t5. Cancel an order')
+            print('\t6. Exit')
             sel = int(input("\nSelection: "))    
         elif sel == 2:
             print("Please enter your customer information")
@@ -120,7 +117,6 @@ def startup():
             print('\t5. Cancel an order')
             print('\t6. Exit')
             sel = int(input("\nSelection: ")) 
-        
         elif sel == 3:
             addOrder()
             print('\t1. View current game selection')
@@ -148,11 +144,7 @@ def startup():
         elif sel == 6:
             quit()
         else:
-            print("Not a valid input")
+         print("Not a valid input")
 
-        
-
-
-    
+          
 startup()
-
