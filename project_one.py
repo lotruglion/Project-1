@@ -32,7 +32,7 @@ mycursor = mydb.cursor()
 
 
 
-def customerInfo():
+def customerInfo(): #This function will allow a user to input their information into the database based on user input
     cusName = str(input('Please enter your full name: '))
     cusAddress = str(input('Please enter your address: '))
     cusPhone = str(input('Please enter your number: '))
@@ -46,7 +46,7 @@ def customerInfo():
         print(cusInfo)
     
 
-def addOrder():
+def addOrder(): #This function will use a SQL statement to insert an order into the database based on user input for a Game's ID and their Customer ID
     gameID = int(input("Please enter the ID of the game you wish to order: "))
     cusID = int(input("Please enter your customer ID: "))
     mycursor.execute("INSERT INTO Orders (GameID, CustomerID) VALUES (%s, %s)",(gameID, cusID))
@@ -57,19 +57,19 @@ def addOrder():
         print("Your order for:",gameOrder, "has been placed!")
 
 
-def viewGames():
+def viewGames(): #This function will use a SQL statement to select and print out all the games into the terminal
     allGames =  mycursor.execute("SELECT * FROM Games ORDER BY Title ASC")
     for allGames in mycursor:
         print(allGames)
 
-def viewOrder():
+def viewOrder(): #This function will use a SQL statement to print out all the orders done by a Customer ID based on user input
     cusOrderID = int(input("Please enter your Customer ID number: "))
     myOrder =  mycursor.execute(f"SELECT * FROM Orders WHERE CustomerID = {cusOrderID}")
     for myOrder in mycursor:
         print("Here is your Order ID, ID of purchased game, and Customer ID:",myOrder)
 
 
-def cancelOrder():
+def cancelOrder(): #This function will use a SQL statement to delete an order based on the Order ID given to the use
     OrderID = int(input("Please enter the Order ID of the purchase you wish to cancel: "))
     deleteOrder =  mycursor.execute(f"DELETE FROM Orders WHERE OrderID = {OrderID}")
     mydb.commit()
